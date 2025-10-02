@@ -18,6 +18,17 @@ def ping():
         "utc_time": datetime.now(timezone.utc).isoformat()
     })
 
+@app.route("/submit", methods=["POST"])
+def submit():
+    data = request.get_json()
+    try:
+        submission = SurveySubmission(**data)
+        record = submission.to_stored_record()
+        # optionally, save to disk here
+        return jsonify(record)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
 @app.post("/v1/survey")
 def submit_survey():
     payload = request.get_json(silent=True)
@@ -38,4 +49,4 @@ def submit_survey():
     return jsonify({"status": "ok"}), 201
 
 if __name__ == "__main__":
-    app.run(port=0, debug=True)
+    app.run(port=5000, debug=True)
