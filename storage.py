@@ -12,6 +12,6 @@ def append_json_line(record: Mapping[str, Any]) -> None:
             json.dumps(
                 record,
                 ensure_ascii=False,
-                default=lambda o: o.isoformat() if isinstance(o, datetime) else o
+                default=lambda o: o.isoformat() if isinstance(o, datetime) else str(o)
             ) + "\n"
         )
