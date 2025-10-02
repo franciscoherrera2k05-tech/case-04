@@ -1,3 +1,4 @@
+import hashlib
 from datetime import datetime, timezone
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -35,7 +36,14 @@ def submit_survey():
         ip=request.headers.get("X-Forwarded-For", request.remote_addr or "")
     )
     append_json_line(record.dict())
-    return jsonify({"status": "ok"}), 201
+
+
+    record_str = json.dumps(record.dict(), sort_keys=True)
+    submission_id = hashlib.sha256(record_str.encode("utf-8")).hexdigest()
+
+    return jsonify({"submission_id": submission_id}), 201  # ← Return the hex ID her
+
+    
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
