@@ -42,13 +42,9 @@ def submit_survey():
 
     record = StoredSurveyRecord(
         **submission.dict(),
-        comments=submission.comments or "",
-        user_agent=submission.user_agent or "",
         received_at=datetime.now(timezone.utc),
-        ip=request.headers.get("X-Forwarded-For", request.remote_addr or ""
+        ip=request.headers.get("X-Forwarded-For", request.remote_addr or "")
     )
-
-
     append_json_line(record.dict())
     return jsonify({"status": "ok"}), 201
 
