@@ -47,10 +47,8 @@ def submit_survey():
         received_at=datetime.now(timezone.utc),
         ip=request.headers.get("X-Forwarded-For", request.remote_addr or "")
     )
-    record_dict = record.dict()
-    append_json_line(record_dict)
-    return jsonify(record_dict), 201
-
+    append_json_line(record.dict())
+    return jsonify({"status": "ok"}), 201
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
