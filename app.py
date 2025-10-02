@@ -24,10 +24,12 @@ def submit():
     try:
         submission = SurveySubmission(**data)
         record = submission.to_stored_record()
-        # optionally, save to disk here
-        return jsonify(record)
+        # FIX was needed here only
+        return jsonify(record)   # <-- record is already a dict from to_stored_record()
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+
+
 
 @app.post("/v1/survey")
 def submit_survey():
